@@ -147,7 +147,7 @@ struct Node {
     pushup();
   }
   void maketag() {
-    tag = true;
+    tag ^= true;
     long long premax = maxx;
     long long premin = minn;
     maxx = -premin;
@@ -179,6 +179,7 @@ struct Node {
       sum = minn = maxx = w;
       return;
     }
+
     if (tag) {
       pushdown();
     }
@@ -297,8 +298,8 @@ void updNODE(long long x, long long w) {
 }
 
 int main() {
-  // freopen("P1505_1.in", "r", stdin);
-  // freopen("ans.ans", "w", stdout);
+  freopen("P1505_11.in", "r", stdin);
+  freopen("ans.ans", "w", stdout);
   totN = read();
   for (long long i = 1, x, y, w; i <= totN - 1; ++i) {
     x = read() + 1;
@@ -320,19 +321,44 @@ int main() {
     x = read();
     y = read();
     if (WORK == "C") {
+      putchar('C');
+      write(x);
+      putchar(' ');
+      write(y);
+      putchar('\n');
       updNODE(x, y);
     } else if (WORK == "N") {
+      puts("N");
+      write(x);
+      putchar(' ');
+      write(y);
+      putchar('\n');
       ++x, ++y;
       updRANGE(x, y);
     } else if (WORK == "SUM") {
+      puts("SUM");
+      write(x);
+      putchar(' ');
+      write(y);
+      putchar('\n');
       ++x, ++y;
       write(qRANGEsum(x, y));
       putchar('\n');
     } else if (WORK == "MIN") {
+      puts("MIN");
+      write(x);
+      putchar(' ');
+      write(y);
+      putchar('\n');
       ++x, ++y;
       write(qRANGEmin(x, y));
       putchar('\n');
     } else if (WORK == "MAX") {
+      puts("MAX");
+      write(x);
+      putchar(' ');
+      write(y);
+      putchar('\n');
       ++x, ++y;
       write(qRANGEmax(x, y));
       putchar('\n');

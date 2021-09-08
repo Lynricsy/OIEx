@@ -4,7 +4,8 @@
  * Date: 2021 Mon Date
  * Algorithm:
  **************************************************************/
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
+#include <cstdio>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -35,4 +36,11 @@ template <typename T> inline void write(T x) {
   putchar(x % 10ll + '0');
 }
 
-int main() { return 0; } // Thomitics Code
+long long totN;
+
+int main() {
+  totN = read();
+  ++++++++++totN;
+  write(totN);
+  return 0;
+} // Thomitics Code
