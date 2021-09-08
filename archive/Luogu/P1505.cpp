@@ -50,7 +50,7 @@ void write(const long long &x) {
 }
 
 const long long maxN = 100090;
-long long totN;
+long long totQ;
 long long totM;
 long long fath[maxN];
 long long siz[maxN];
@@ -300,8 +300,8 @@ void updNODE(long long x, long long w) {
 int main() {
   freopen("P1505_11.in", "r", stdin);
   freopen("ans.ans", "w", stdout);
-  totN = read();
-  for (long long i = 1, x, y, w; i <= totN - 1; ++i) {
+  totQ = read();
+  for (long long i = 1, x, y, w; i <= totQ - 1; ++i) {
     x = read() + 1;
     y = read() + 1;
     w = read();
@@ -312,7 +312,7 @@ int main() {
   }
   DFS1(1, 0, 1);
   DFS2(1, 1);
-  rot = new Node(1, totN);
+  rot = new Node(1, totQ);
   totM = read();
   for (int i = 1; i <= totM; ++i) {
     cin >> WORK;
