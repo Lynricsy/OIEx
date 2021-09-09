@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Debug",
-            "type": "lldb",
+            "type": "cppdbg",
             "request": "launch",
             "args": [],
             "stopAtEntry": false,
@@ -11,8 +11,8 @@
             "environment": [],
             "externalConsole": false,
             "linux": {
-                "MIMode": "lldb",
-                "miDebuggerPath": "lldb",
+                "MIMode": "gdb",
+                "miDebuggerPath": "gdb",
                 "program": "${workspaceFolder}/output/main"
             },
             "osx": {
