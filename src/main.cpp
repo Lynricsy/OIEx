@@ -52,7 +52,8 @@ long long siz[maxN];
 long long nowANS;
 
 long long mkCHAOS() {
-  return (rand() % 2039483) * 384 + (rand() % 39445583 - 83494) * 2 - 9384;
+  return (rand() % 381278 * rand() % 101710171017ll * rand() * 1949100871) %
+         19260817081ll;
 }
 
 int main() {
