@@ -35,4 +35,19 @@ template <typename T> inline void write(T x) {
   putchar(x % 10ll + '0');
 }
 
-int main() { return 0; } // Thomitics Code
+const long long maxN = 20090;
+long long totANS;
+struct Node {
+  long long id;
+  long long num;
+} nums[maxN], sta[maxN];
+long long totN;
+
+int main() {
+  totN = read();
+  for (int i = 1; i <= totN; ++i) {
+    nums[i].num = read();
+    nums[i].id = i;
+  }
+  return 0;
+} // Thomitics Code

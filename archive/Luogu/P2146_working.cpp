@@ -77,8 +77,8 @@ void DFS1(long long nowX, long long fath) {
     }
     DFS1(vir, nowX);
     siz[nowX] += siz[vir];
-    if (siz[nowX] > maxx) {
-      maxx = siz[nowX];
+    if (siz[vir] > maxx) {
+      maxx = siz[vir];
       Sson[nowX] = vir;
     }
   }
@@ -246,7 +246,7 @@ int main() {
     if (opt == "install") {
       write(qRange(1, x, false));
       putchar('\n');
-      updRange(0, x, true);
+      updRange(1, x, true);
     } else {
       write(qTree(x, true));
       putchar('\n');
