@@ -35,4 +35,35 @@ template <typename T> inline void write(T x) {
   putchar(x % 10ll + '0');
 }
 
-int main() { return 0; } // Thomitics Code
+const long long maxN = 20090;
+long long totANS = -1;
+struct Node {
+  long long id;
+  long long num;
+} nums[maxN], sta[maxN];
+long long totN;
+long long top;
+
+int main() {
+  totN = read();
+  for (int i = 1; i <= totN; ++i) {
+    nums[i].num = read();
+    nums[i].id = i;
+  }
+  for (int i = 1; i <= totN; ++i) {
+    if (!top) {
+      sta[++top] = nums[i];
+    } else {
+      while (sta[top].num > nums[i].num) {
+        totANS = max(totANS, sta[top].num * (i - sta[top - 1].id - 1));
+        --top;
+      }
+      sta[++top] = nums[i];
+    }
+  }
+  for (int i = 1; i <= top; ++i) {
+    totANS = max(totANS, sta[i].num * (totN - sta[i - 1].id));
+  }
+  write(totANS);
+  return 0;
+} // Thomitics Code
