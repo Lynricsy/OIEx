@@ -35,4 +35,27 @@ template <typename T> inline void write(T x) {
   putchar(x % 10ll + '0');
 }
 
-int main() { return 0; } // Thomitics Code
+const long long maxN = 10090;
+long long inv[maxN];
+long long totN;
+const long long MOD = 20040313;
+long long sum;
+
+void prefix() {
+  inv[1] = 1;
+  for (int i = 2; i <= totN; ++i) {
+    inv[i] = (1ll * (MOD - MOD / i) * inv[MOD % i]) % MOD;
+  }
+}
+
+int main() {
+  totN = read();
+  prefix();
+  for (int i = 1; i <= totN; ++i) {
+    sum += inv[i];
+    sum %= MOD;
+  }
+  sum = (sum * totN) % MOD;
+  write(sum);
+  return 0;
+} // Thomitics Code

@@ -5,6 +5,8 @@
  * Algorithm:
  **************************************************************/
 #include <bits/stdc++.h>
+#include <cstdio>
+#include <cstring>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -35,4 +37,31 @@ template <typename T> inline void write(T x) {
   putchar(x % 10ll + '0');
 }
 
-int main() { return 0; } // Thomitics Code
+const long long maxN = 10090;
+long long LEN;
+char str[maxN];
+long long DP[maxN];
+const long long MOD = 1E9 + 9;
+
+int main() {
+  DP[0] = 1;
+  scanf("%s", str + 1);
+  LEN = strlen(str + 1);
+  for (int i = 1, l, r; i <= LEN; ++i) {
+    if (str[i] != 'W') {
+      l = i;
+      r = i + 1;
+      for (int j = i; l >= 1 and r <= LEN; ++j) {
+        if (str[r] == 'B' || str[l] == 'W') {
+          break;
+        }
+        DP[r] += DP[l - 1];
+        DP[r] %= MOD;
+        --l;
+        ++r;
+      }
+    }
+  }
+  write(DP[LEN]);
+  return 0;
+} // Thomitics Code
