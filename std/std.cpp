@@ -25,7 +25,7 @@ inline long long read() {
   }
   return x * f;
 }
-template <typename T> inline void write(T x) {
+template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
   if (x < 0ll) {
     putchar('-');
     x = -x;
@@ -33,6 +33,11 @@ template <typename T> inline void write(T x) {
   if (x > 9ll)
     write(x / 10ll);
   putchar(x % 10ll + '0');
+  if (tim) {
+    for (int i = 1; i <= tim; ++i) {
+      putchar(ch);
+    }
+  }
 }
 
 int main() { return 0; } // Thomitics Code

@@ -25,7 +25,7 @@ inline long long read() {
   }
   return x * f;
 }
-template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
+template <typename T> inline void write(T x) {
   if (x < 0ll) {
     putchar('-');
     x = -x;
@@ -33,11 +33,36 @@ template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
   if (x > 9ll)
     write(x / 10ll);
   putchar(x % 10ll + '0');
-  if (tim) {
-    for (int i = 1; i <= tim; ++i) {
-      putchar(ch);
+}
+
+const long long maxN = 1000090;
+const long long MOD = 9999991;
+long long totN;
+long long fac[maxN];
+
+long long quick_pow(long long a, long long b) {
+  long long ans = 1;
+  long long base = a;
+  while (b) {
+    if (b & 1) {
+      ans *= base;
+      ans %= MOD;
     }
+    base = (base * base) % MOD;
+    b >>= 1;
+  }
+  return ans;
+}
+void prefix() {
+  fac[0] = 1;
+  for (int i = 1; i <= totN - 1; ++i) {
+    fac[i] = fac[i - 1] * i % MOD;
   }
 }
 
-int main() { return 0; } // Thomitics Code
+int main() {
+  totN = read();
+  prefix();
+  write(quick_pow(totN, totN - 2) * fac[totN - 1] % MOD);
+  return 0;
+} // Thomitics Code

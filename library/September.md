@@ -12,3 +12,22 @@ if (dis(x, c) + dis(x, d) == dis(c, d) ||
       puts("N");
     }
 ```
+
+## 2021-09-15
+
+### P4981 父子
+
+多组数据输出忘记换行。呜
+
+### P4430 小猴打架
+
+又TM是结论题，预处理忘取模了![qq_emoji: wul](https://z3.ax1x.com/2021/05/30/2VJfJ0.png)
+
+```cpp
+void prefix() {
+  fac[0] = 1;
+  for (int i = 1; i <= totN - 1; ++i) {
+    fac[i] = fac[i - 1] * i % MOD;
+  }
+}
+```
