@@ -31,3 +31,25 @@ void prefix() {
   }
 }
 ```
+
+## 2021-09-17
+
+### P1986
+
+草，循环嵌套内部数组又用错了！
+
+```c++
+for (int j = nodes[i].r; j >= nodes[i].l; --j) {
+  if (x >= nodes[i].x) {
+    break;
+  }
+  if (!nav[i]) {
+           ^
+            应该是j
+    nav[i] = true;
+        ^
+          应该是j
+    ++x;
+  }
+}
+```
