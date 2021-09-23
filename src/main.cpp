@@ -5,8 +5,7 @@
  * Algorithm:
  **************************************************************/
 #include <bits/stdc++.h>
-#include <cstdio>
-#include <cstdlib>
+#include <cstring>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -43,125 +42,116 @@ template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
 }
 
 const long long maxN = 1090;
-long long rot;
-long long X, Y, Z;
-long long cntNODE;
 long long totN;
-
-long long arand() { return rand() % 114514 + 3; }
+long long totM;
+long long totW;
+long long INmax;
+long long L, R;
+long long Mid = 114514;
+long long nums[maxN];
+long long cha[maxN];
+long long deal[maxN];
+long long nowM;
+long long nowSUM;
 struct Node {
-  long long lch, rch;
+  long long l, r;
+  Node *lch, *rch;
+  long long tag;
   long long val;
-  long long rnd;
-  long long siz;
-} nodes[maxN];
-void update(long long nowX) {
-  nodes[nowX].siz = nodes[nodes[nowX].lch].siz + nodes[nodes[nowX].rch].siz + 1;
-}
-
-void spilt(long long MTree, long long K, long long &lTree, long long &rTree) {
-  if (!MTree) {
-    lTree = rTree = 0;
-    return;
+  void pushup() { val = min(lch->val, rch->val); }
+  Node(long long L, long long R) {
+    l = L;
+    r = R;
+    tag = 0;
+    if (l == r) {
+      lch = rch = NULL;
+      val = nums[l];
+      return;
+    }
+    long long Mid = (L + R) >> 1;
+    lch = new Node(L, Mid);
+    rch = new Node(Mid + 1, R);
+    pushup();
   }
-  if (nodes[MTree].val <= K) {
-    lTree = MTree;
-    spilt(nodes[MTree].rch, K, nodes[MTree].rch, rTree);
-  } else {
-    rTree = MTree;
-    spilt(nodes[MTree].lch, K, lTree, nodes[MTree].lch);
+  void maketag(long long w) {
+    val += w;
+    tag += w;
   }
-  update(MTree);
-}
-long long merge(long long XTree, long long YTree) {
-  if (!XTree || !YTree) {
-    return XTree + YTree;
+  void pushdown() {
+    if (!tag) {
+      return;
+    }
+    lch->maketag(tag);
+    rch->maketag(tag);
+    tag = 0;
   }
-  if (nodes[XTree].rnd > nodes[YTree].rnd) {
-    nodes[XTree].rch = merge(nodes[XTree].rch, YTree);
-    update(XTree);
-    return XTree;
-  } else {
-    nodes[YTree].lch = merge(XTree, nodes[YTree].lch);
-    update(YTree);
-    return YTree;
-  }
-}
-
-void insert(long long x) {
-  ++cntNODE;
-  nodes[cntNODE].rnd = arand();
-  nodes[cntNODE].val = x;
-  nodes[cntNODE].lch = nodes[cntNODE].rch = 0;
-  nodes[cntNODE].siz = 1;
-  spilt(rot, x, X, Y);
-  rot = merge(merge(X, cntNODE), Y);
-}
-
-void del(long long x) {
-  spilt(rot, x - 1, X, Y);
-  spilt(Y, x, Y, Z);
-  Y = merge(nodes[Y].lch, nodes[Y].rch);
-  rot = merge(merge(X, Y), Z);
-}
-
-long long Kth(long long nowR, long long K) {
-  while (true) {
-    if (nodes[nodes[nowR].lch].siz + 1 == K) {
-      return nodes[nowR].val;
-    } else if (K <= nodes[nodes[nowR].lch].siz) {
-      nowR = nodes[nowR].lch;
-    } else {
-      K -= nodes[nodes[nowR].lch].siz + 1;
-      nowR = nodes[nowR].rch;
+  bool INrange(long long L, long long R) { return (L <= l) && (r <= R); }
+  bool OUTrange(long long L, long long R) { return (l > R) || (L > r); }
+  void update(long long L, long long R, long long w) {
+    if (INrange(L, R)) {
+      maketag(w);
+    } else if (!OUTrange(L, R)) {
+      pushdown();
+      lch->update(L, R, w);
+      rch->update(L, R, w);
+      pushup();
     }
   }
-}
+  long long query(long long L, long long R) {
+    if (INrange(L, R)) {
+      return val;
+    }
+    if (OUTrange(L, R)) {
+      return INF;
+    }
+    pushdown();
+    return min(lch->query(L, R), rch->query(L, R));
+  }
+};
 
-long long nxt(long long x) {
-  spilt(rot, x, X, Y);
-  long long ans = Kth(Y, 1);
-  merge(X, Y);
-  return ans;
-}
-long long pre(long long x) {
-  spilt(rot, x - 1, X, Y);
-  long long ans = Kth(X, nodes[X].siz);
-  merge(X, Y);
-  return ans;
-}
-long long thK(long long x) {
-  spilt(rot, x - 1, X, Y);
-  long long ans = nodes[X].siz + 1;
-  merge(X, Y);
-  return ans;
+Node *rot;
+
+bool check(long long x) {
+  nowSUM = 0;
+  nowM = totM;
+  memset(deal, 0, sizeof deal);
+  for (int i = 1; i <= totN; ++i) {
+    if (nowSUM < x) {
+      deal[i + totW] -= x - nowSUM;
+      nowM -= x - nowSUM;
+      write(x - nowSUM, '\n', 1);
+      nowSUM = x;
+    }
+    if (nowM < 0) {
+      return false;
+    }
+  }
+  if (nowM < 0) {
+    return false;
+  }
+  return true;
 }
 
 int main() {
   totN = read();
-  for (int i = 1, opt, x; i <= totN; ++i) {
-    opt = read();
-    x = read();
-    switch (opt) {
-    case 1:
-      insert(x);
-      break;
-    case 2:
-      del(x);
-      break;
-    case 3:
-      write(thK(x), '\n', 1);
-      break;
-    case 4:
-      write(Kth(rot, x), '\n', 1);
-      break;
-    case 5:
-      write(pre(x), '\n', 1);
-      break;
-    case 6:
-      write(nxt(x), '\n', 1);
-      break;
+  totM = read();
+  totW = read();
+  for (int i = 1; i <= totN; ++i) {
+    nums[i] = read();
+    cha[i] = nums[i] - nums[i - 1];
+    INmax = max(nums[i], INmax);
+  }
+  // rot = new Node(1, totN);
+  L = 0;
+  R = INmax + totM;
+  while (L <= R) {
+    Mid = (L + R) >> 1;
+    if (check(Mid)) {
+      L = Mid + 1;
+    } else {
+      R = Mid - 1;
     }
   }
+  write(Mid);
   return 0;
 } // Thomitics Code
