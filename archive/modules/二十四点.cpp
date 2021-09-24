@@ -1,4 +1,6 @@
+#include <bits/stdc++.h>
 #include <cmath>
+#include <cstdio>
 #include <iostream>
 #include <string>
 
@@ -82,7 +84,7 @@ int main() {
     int x;
     cin >> x;
     number[i] = x;
-    itoa(x, buffer, 10);
+    sprintf(buffer, "%d", x);
     expression[i] = buffer;
   }
 

@@ -5,9 +5,6 @@
  * Algorithm:
  **************************************************************/
 #include <bits/stdc++.h>
-#include <cstdio>
-#include <utility>
-#include <vector>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -44,41 +41,52 @@ template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
 }
 
 const long long maxN = 1090;
-long long totA;
-long long totB;
-long long totNUM;
-long long Acnt;
-vector<long long> V;
-bool usd[maxN];
-long long sum;
-long long Asum;
+long long a[maxN];
+long long totANS;
+long long totN;
+long long totK;
+
+struct Edge {
+  long long nxt;
+  long long to;
+} edges[maxN];
+long long cnt_edges;
+long long head[maxN];
+void add_edge(long long u, long long v) {
+  ++cnt_edges;
+  edges[cnt_edges].nxt = head[u];
+  head[u] = cnt_edges;
+  edges[cnt_edges].to = v;
+}
+
+long long DFS(long long nowX, long long dep) {
+  long long maxD = dep;
+  for (int i = head[nowX]; i; i = edges[i].nxt) {
+    long long vir = edges[i].to;
+    maxD = max(maxD, DFS(vir, dep + 1));
+  }
+  if (a[nowX] - 1 && maxD - dep == totK - 1) {
+    ++totANS;
+    // a[nowX] = 1;
+    return 0;
+  }
+  return maxD;
+}
 
 int main() {
-  totA = read();
-  totB = read();
-  for (int i = 1; sum + i <= totA + totB; ++i) {
-    sum += i;
-    ++totNUM;
+  totN = read();
+  totK = read();
+  for (int i = 1; i <= totN; ++i) {
+    a[i] = read();
   }
-  for (int i = totNUM; i >= 1; --i) {
-    if (Asum + i <= totA) {
-      Asum += i;
-      usd[i] = true;
-      ++Acnt;
-    }
+  if (a[1] - 1) {
+    ++totANS;
+    a[1] = 1;
   }
-  write(Acnt, '\n', 1);
-  for (int i = totNUM; i >= 1; --i) {
-    if (usd[i]) {
-      write(i, ' ', 1);
-    }
+  for (int i = 2; i <= totN; ++i) {
+    add_edge(a[i], i);
   }
-  putchar('\n');
-  write(totNUM - Acnt, '\n', 1);
-  for (int i = totNUM; i >= 1; --i) {
-    if (!usd[i]) {
-      write(i, ' ', 1);
-    }
-  }
+  DFS(1, 0);
+  write(totANS);
   return 0;
 } // Thomitics Code
