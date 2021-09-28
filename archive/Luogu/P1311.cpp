@@ -5,6 +5,9 @@
  * Algorithm:
  **************************************************************/
 #include <bits/stdc++.h>
+#include <cmath>
+#include <csetjmp>
+#include <future>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -40,34 +43,37 @@ template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
   }
 }
 
-int totN;
-long long H[1000005];
-long long totANS = 1;
-bool flag;
+const long long maxN = 190;
+long long totN;
+long long totK;
+long long totP;
+long long A[maxN];
+long long B[maxN];
+long long PREcol[59][maxN];
+// long long PREcol[59];
+long long totANS;
+long long lst;
 
 int main() {
   totN = read();
-  for (int i = 1; i <= totN; i++)
-    H[i] = read();
-  if (H[2] >= H[1])
-    flag = 1;
-  for (int i = 1; i <= totN; i++) {
-    if (flag == 0 && i == totN) {
-      totANS++;
-      break;
+  totK = read();
+  totP = read();
+  for (int i = 1; i <= totN; ++i) {
+    A[i] = read();
+    B[i] = read();
+  }
+  for (int i = 1; i <= totN; ++i) {
+    for (int j = 0; j <= totK - 1; ++j) {
+      PREcol[j][i] = PREcol[j][i - 1];
     }
-    if (flag == 1)
-      if (H[i + 1] < H[i]) {
-        totANS++;
-        flag = 0;
-        continue;
-      }
-    if (flag == 0)
-      if (H[i + 1] > H[i]) {
-        totANS++;
-        flag = 1;
-        continue;
-      }
+    ++PREcol[A[i]][i];
+    if (B[i] <= totP) {
+      lst = i;
+      totANS += PREcol[A[i]][lst] - 1;
+    } else {
+      totANS += PREcol[A[i]][lst];
+    }
   }
   write(totANS);
-}
+  return 0;
+} // Thomitics Code

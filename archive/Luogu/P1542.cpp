@@ -5,6 +5,8 @@
  * Algorithm:
  **************************************************************/
 #include <bits/stdc++.h>
+#include <cmath>
+#include <cstdio>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -40,34 +42,47 @@ template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
   }
 }
 
-int totN;
-long long H[1000005];
-long long totANS = 1;
-bool flag;
+const long long maxN = 1090;
+long long totN;
+long long A[maxN];
+long long B[maxN];
+long long P[maxN];
+long double L = 0;
+long double R = 1E9;
+long double Mid;
+long double ANS;
+
+bool check(long double x) {
+  long double sum = 0;
+  for (int i = 1; i <= totN; ++i) {
+    sum += P[i] / x;
+    if (sum > B[i]) {
+      return false;
+    }
+    if (sum < A[i]) {
+      sum = A[i];
+    }
+  }
+  return true;
+}
 
 int main() {
   totN = read();
-  for (int i = 1; i <= totN; i++)
-    H[i] = read();
-  if (H[2] >= H[1])
-    flag = 1;
-  for (int i = 1; i <= totN; i++) {
-    if (flag == 0 && i == totN) {
-      totANS++;
-      break;
-    }
-    if (flag == 1)
-      if (H[i + 1] < H[i]) {
-        totANS++;
-        flag = 0;
-        continue;
-      }
-    if (flag == 0)
-      if (H[i + 1] > H[i]) {
-        totANS++;
-        flag = 1;
-        continue;
-      }
+  for (int i = 1; i <= totN; ++i) {
+    A[i] = read();
+    B[i] = read();
+    P[i] = read();
   }
-  write(totANS);
-}
+  Mid = (L + R) / 2.0;
+  while (R - L >= 0.000001) {
+    Mid = (L + R) / 2.0;
+    if (check(Mid)) {
+      ANS = Mid;
+      R = Mid;
+    } else {
+      L = Mid;
+    }
+  }
+  printf("%.2Lf", ANS);
+  return 0;
+} // Thomitics Code
