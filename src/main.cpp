@@ -5,7 +5,6 @@
  * Algorithm:
  **************************************************************/
 #include <bits/stdc++.h>
-#include <cstdio>
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
 
@@ -48,49 +47,4 @@ inline void write(initializer_list<T> WRITE_NUMS, char ch) {
   }
 }
 
-const long long maxN = 1090;
-long long totN;
-bool delt[maxN];
-struct Edge {
-  long long nxt;
-  long long to;
-} edges[maxN];
-long long cnt_edges;
-long long head[maxN];
-void add_edge(long long u, long long v) {
-  ++cnt_edges;
-  edges[cnt_edges].nxt = head[u];
-  head[u] = cnt_edges;
-  edges[cnt_edges].to = v;
-}
-
-void DFS(long long nowX, long long fa) {
-  for (int i = head[nowX]; i; i = edges[i].nxt) {
-    long long vir = edges[i].to;
-    if (vir == fa) {
-      continue;
-    }
-    DFS(vir, nowX);
-  }
-  if (!delt[nowX]) {
-    if (delt[fa]) {
-      puts("First");
-      exit(0);
-    }
-    delt[nowX] = delt[fa] = true;
-  }
-}
-
-int main() {
-  delt[0] = true;
-  totN = read();
-  for (int i = 1, u, v; i <= totN - 1; ++i) {
-    u = read();
-    v = read();
-    add_edge(u, v);
-    add_edge(v, u);
-  }
-  DFS(1, 0);
-  puts("Second");
-  return 0;
-} // Thomitics Code
+int main() { return 0; } // Thomitics Code
