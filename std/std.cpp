@@ -39,5 +39,12 @@ template <typename T> inline void write(T x, char ch = '\n', int tim = 0) {
     }
   }
 }
+template <typename T>
+inline void write(initializer_list<T> WRITE_NUMS, char ch) {
+  for (auto i : WRITE_NUMS) {
+    write(i);
+    putchar(ch);
+  }
+}
 
 int main() { return 0; } // Thomitics Code
