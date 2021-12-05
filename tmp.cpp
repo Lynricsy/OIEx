@@ -4,9 +4,17 @@
  * Date: 2021 Mon Date
  * Algorithm:
  **************************************************************/
+
 #include <bits/stdc++.h>
+#include <bitset>
+#include <cstdlib>
+#include <ctime>
+#include <shared_mutex>
+
 #define INF 0x3f3f3f3f3f3f3f3f
 #define IINF 0x3f3f3f3f
+#define arand() rand() % 114514
+#define mrg() merge(x, y)
 
 using namespace std;
 
@@ -47,202 +55,115 @@ void write(const long long &x) {
 }
 
 const long long maxN = 1000090;
-long long totN;
-long long totM;
-long long totR;
-long long MOD;
-long long fath[maxN];
-long long siz[maxN];
-long long depth[maxN];
-long long Sson[maxN];
-long long ID[maxN];
-long long top[maxN];
-long long nums[maxN];
-long long num[maxN];
-long long cntNODE;
-
-struct Edge {
-  long long nxt;
-  long long to;
-} edges[maxN];
-long long cnt_edges;
-long long head[maxN];
-void add_edge(long long x, long long y) {
-  ++cnt_edges;
-  edges[cnt_edges].nxt = head[x];
-  head[x] = cnt_edges;
-  edges[cnt_edges].to = y;
-}
 
 struct Node {
-  long long l, r;
-  long long tag, val;
-  Node *lch, *rch;
-  inline void pushup() { val = lch->val + rch->val; }
-  Node(long long L, long long R) {
-    l = L;
-    r = R;
-    tag = 0;
-    if (l == r) {
-      rch = lch = NULL;
-      val = num[l];
-      return;
-    }
-    long long Mid = (L + R) >> 1;
-    lch = new Node(L, Mid);
-    rch = new Node(Mid + 1, R);
-    pushup();
-  }
-  void maketag(long long w) {
-    tag += w;
-    val += (r - l + 1) * w;
-    val %= MOD;
-  }
-  void pushdown() {
-    if (!tag) {
-      return;
-    }
-    lch->maketag(tag);
-    rch->maketag(tag);
-    tag = 0;
-  }
-  inline bool INrange(long long L, long long R) { return (L <= l) && (r <= R); }
-  inline bool OUTrange(long long L, long long R) { return (l > R) || (L > r); }
-  void update(long long L, long long R, long long w) {
-    if (INrange(L, R)) {
-      maketag(w);
-    } else if (!OUTrange(L, R)) {
-      pushdown();
-      lch->update(L, R, w);
-      rch->update(L, R, w);
-      pushup();
-    }
-  }
-  long long query(long long L, long long R) {
-    if (INrange(L, R)) {
-      return val;
-    } else if (OUTrange(L, R)) {
-      return 0;
-    }
-    pushdown();
-    return (lch->query(L, R) + rch->query(L, R)) % MOD;
-  }
-};
+  long long lch, rch;
+  long long val, siz;
+  long long rnd;
+  bool rev;
+} nodes[maxN];
 
-void DFS1(long long x, long long fa, long long dep) {
-  fath[x] = fa;
-  depth[x] = dep;
-  long long max = -1;
-  siz[x] = 1;
-  for (int i = head[x]; i; i = edges[i].nxt) {
-    long long vir = edges[i].to;
-    if (vir == fa) {
-      continue;
-    }
-    DFS1(vir, x, dep + 1);
-    siz[x] += siz[vir];
-    if (max < siz[vir]) {
-      max = siz[vir];
-      Sson[x] = vir;
-    }
-  }
-}
-void DFS2(long long x, long long nowTOP) {
-  ++cntNODE;
-  ID[x] = cntNODE;
-  num[cntNODE] = nums[x];
-  top[x] = nowTOP;
-  if (!Sson[x]) {
+long long X, Y, Z, W;
+long long rot;
+long long cnt;
+long long totN;
+long long totM;
+long long raw[maxN];
+
+void pushdown(long long x) {
+  if (!nodes[x].rev) {
     return;
   }
-  DFS2(Sson[x], nowTOP);
-  for (int i = head[x]; i; i = edges[i].nxt) {
-    long long vir = edges[i].to;
-    if (vir == fath[x] || vir == Sson[x]) {
-      continue;
-    }
-    DFS2(vir, vir);
+  swap(nodes[x].lch, nodes[x].rch);
+  if (nodes[x].lch) {
+    nodes[nodes[x].lch].rev ^= true;
+  }
+  if (nodes[x].rch) {
+    nodes[nodes[x].rch].rev ^= true;
+  }
+  nodes[x].rev = false;
+}
+
+void update(long long nowX) {
+  nodes[nowX].siz = nodes[nodes[nowX].lch].siz + nodes[nodes[nowX].rch].siz + 1;
+}
+
+long long merge(long long Atree, long long Btree) {
+  if ((!Atree) || (!Btree)) {
+    return Atree + Btree;
+  } else if (nodes[Atree].rnd < nodes[Btree].rnd) {
+    pushdown(Atree);
+    nodes[Atree].rch = merge(nodes[Atree].rch, Btree);
+    update(Atree);
+    return Atree;
+  } else {
+    pushdown(Btree);
+    nodes[Btree].lch = merge(Atree, nodes[Btree].lch);
+    update(Btree);
+    return Btree;
   }
 }
 
-Node *rot;
-
-long long qRANGE(long long x, long long y) {
-  long long nowANS = 0;
-  while (top[x] != top[y]) {
-    if (depth[top[x]] < depth[top[y]]) {
-      swap(x, y);
-    }
-    nowANS += rot->query(ID[top[x]], ID[x]);
-    x = fath[top[x]];
+void split(long long splitX, long long K, long long &Xtree, long long &Ytree) {
+  if (!splitX) {
+    Xtree = Ytree = 0;
+    return;
   }
-  if (depth[x] > depth[y]) {
-    swap(x, y);
+  pushdown(splitX);
+  if (nodes[nodes[splitX].lch].siz < K) {
+    Xtree = splitX;
+    split(nodes[splitX].rch, K - nodes[nodes[splitX].lch].siz - 1,
+          nodes[splitX].rch, Ytree);
+  } else {
+    Ytree = splitX;
+    split(nodes[splitX].lch, K, Xtree, nodes[splitX].lch);
   }
-  nowANS += rot->query(ID[x], ID[y]);
-  return nowANS % MOD;
-}
-long long qTREE(long long x) {
-  return rot->query(ID[x], ID[x] + siz[x] - 1) % MOD;
+  update(splitX);
 }
 
-void updRANGE(long long x, long long y, long long k) {
-  long long nowANS = 0;
-  while (top[x] != top[y]) {
-    if (depth[top[x]] < depth[top[y]]) {
-      swap(x, y);
-    }
-    rot->update(ID[top[x]], ID[x], k);
-    x = fath[top[x]];
-  }
-  if (depth[x] > depth[y]) {
-    swap(x, y);
-  }
-  rot->update(ID[x], ID[y], k);
+void insert(long long nowX) {
+  split(rot, nowX, X, Y);
+  //	puts("qwq");
+  ++cnt;
+  nodes[cnt].lch = nodes[cnt].rch = 0;
+  nodes[cnt].val = nowX;
+  nodes[cnt].siz = 1;
+  nodes[cnt].rnd = arand();
+  rot = merge(merge(X, cnt), Y);
 }
-void updTREE(long long x, long long k) {
-  rot->update(ID[x], ID[x] + siz[x] - 1, k);
+
+void out(long long x) {
+  if (!x) {
+    return;
+  }
+  pushdown(x);
+  out(nodes[x].lch);
+  // write(raw[x]);
+  write(x);
+  putchar(' ');
+  out(nodes[x].rch);
 }
 
 int main() {
   totN = read();
   totM = read();
-  totR = read();
-  MOD = read();
+  srand(time(0));
   for (int i = 1; i <= totN; ++i) {
-    nums[i] = read() % MOD;
+    // long long x = read();
+    // raw[i] = x;
+
+    insert(i);
+    // nodes[i].val = i;
   }
-  for (int i = 1, x, y; i < totN; ++i) {
-    x = read();
-    y = read();
-    add_edge(x, y);
-    add_edge(y, x);
-  }
-  DFS1(totR, 0, 1);
-  DFS2(totR, totR);
-  rot = new Node(1, totN);
   for (int i = 1; i <= totM; ++i) {
-    short tmp = read();
-    long long x, y, z;
-    if (tmp == 1) {
-      x = read();
-      y = read();
-      z = read() % MOD;
-      updRANGE(x, y, z);
-    } else if (tmp == 2) {
-      x = read();
-      y = read();
-      write(qRANGE(x, y) % MOD);
-      putchar('\n');
-    } else if (tmp == 3) {
-      x = read();
-      z = read() % MOD;
-      updTREE(x, z);
-    } else {
-      x = read();
-      write(qTREE(x) % MOD);
-      putchar('\n');
-    }
+    long long l, r;
+    l = read();
+    r = read();
+    split(rot, l - 1, X, Y);
+    split(Y, r - l + 1, Y, Z);
+    nodes[Y].rev ^= true;
+    rot = merge(X, merge(Y, Z));
   }
+  out(rot);
   return 0;
 } // Thomitics Code

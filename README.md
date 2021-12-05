@@ -11,20 +11,7 @@ My OI workspace.
 
 # Nothing last forever……それでも、わたしは。
 
-$叁肆玖叁叁$
-
 ![](https://upload-bbs.mihoyo.com/upload/2021/05/25/159922380/e12b45cb79b5f9ab7654c643c63d149d_6077329167235459581.gif?x-oss-process=image/resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,gif)
-
-$$
-\begin{matrix}
-\color{gold}\colorbox{black}{\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\kern{0.4pt}} \\
-\large \colorbox{black}{\color{gold}\underline{\texttt{Caution!!! \qquad Caution!!! \qquad Caution!!! \qquad Caution!!! }}}\\
-\Large \colorbox{black}{\color{gold}\underline\text{\Huge ☢\:\Large本文使用了少量\LaTeX，可能会导致加载极快!\Huge \:☢\Large\ \ \!\! \color{black}\kern{8.4pt}}} \\
-\large \colorbox{black}{\color{gold}\underline{\texttt{Caution!!! \qquad Caution!!! \qquad Caution!!! \qquad Caution!!! }}}\\
-\end{matrix}
-$$
-
-$$\small\texttt{本}\huge\texttt{人}_{\small\texttt{的}^{\large\texttt{萌新}\small\texttt{QAQ}}}^{\large\texttt{是}{\small\texttt{刚学}\large\texttt{OI}}}\huge\texttt{但是}^{\large\texttt{即}{\small\texttt{使}}}_{\normalsize\text{是这样}}\texttt{我也}^{\small\texttt{要}\normalsize\texttt{用}\texttt{蒟}_{\texttt{蒻}\large\texttt{的}}}_{\scriptsize\texttt{声音大声喊出}}\texttt{我谔谔}$$
 
 ![](https://ipcounter.ihcr.top/?mode=2&mail=i@foxex.cn&qq=2188955531&gh=Thomitics&lg=%E8%8A%8A%E6%9E%ABThomitics&pic=Miku&str=Nothing%20Last%20Forever.)
 ![](http://啧.tk/gz)
